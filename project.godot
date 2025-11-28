@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 Music="*res://Scenes/music.tscn"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot_state_charts/plugin.cfg")
+
 [input]
 
 jump={
