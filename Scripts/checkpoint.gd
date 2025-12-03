@@ -5,9 +5,7 @@ enum State {DEACTIVE, ACTIVE}
 
 func on_save_game(saved_data:Array[SavedData]):
 	var my_data = SavedCheckpointData.new()
-	print(current_state)
 	my_data.state = current_state
-	print(my_data.state)
 	my_data.position = global_position
 	my_data.scene_path = scene_file_path
 	
@@ -19,7 +17,7 @@ func on_before_load_game():
 
 func on_load_game(saved_data:SavedData):
 	var my_data:SavedCheckpointData = saved_data as SavedCheckpointData
-	print(my_data.state)
+	
 	if my_data.state == my_data.State.ACTIVE:
 		current_state = State.ACTIVE
 		active()
