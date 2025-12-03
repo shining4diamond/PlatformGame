@@ -1,0 +1,165 @@
+[gd_scene load_steps=19 format=3 uid="uid://g5fi1m86mkk7"]
+
+[ext_resource type="Script" uid="uid://c03km3abwdvaf" path="res://Scripts/slimeViola.gd" id="1_uljmq"]
+[ext_resource type="Texture2D" uid="uid://b0b0ktjv075n" path="res://Assets/sprites/slime_purple.png" id="2_ls065"]
+[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="2_njgj3"]
+[ext_resource type="PackedScene" uid="uid://do7owocadqd8a" path="res://Scenes/kill_zone.tscn" id="4_b8xth"]
+[ext_resource type="PackedScene" uid="uid://6sr8oii5btbu" path="res://Scenes/detect_zone.tscn" id="5_heptj"]
+[ext_resource type="Script" uid="uid://couw105c3bde4" path="res://addons/godot_state_charts/state_chart.gd" id="6_pkt3i"]
+[ext_resource type="Script" uid="uid://jk2jm1g6q853" path="res://addons/godot_state_charts/compound_state.gd" id="7_2eo36"]
+[ext_resource type="Script" uid="uid://c1vp0ojjvaby1" path="res://addons/godot_state_charts/parallel_state.gd" id="7_njgj3"]
+[ext_resource type="Script" uid="uid://cytafq8i1y8qm" path="res://addons/godot_state_charts/atomic_state.gd" id="8_a75c6"]
+[ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="9_ryi4w"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uljmq"]
+atlas = ExtResource("2_ls065")
+region = Rect2(0, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_njgj3"]
+atlas = ExtResource("2_ls065")
+region = Rect2(24, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xkjkx"]
+atlas = ExtResource("2_ls065")
+region = Rect2(48, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b8xth"]
+atlas = ExtResource("2_ls065")
+region = Rect2(72, 24, 24, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ls065"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uljmq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_njgj3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xkjkx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b8xth")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uljmq"]
+size = Vector2(6, 9)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_njgj3"]
+radius = 46.09772
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uljmq"]
+radius = 2.0
+height = 6.0
+
+[node name="SlimeViola" type="CharacterBody2D" groups=["game_events"]]
+script = ExtResource("1_uljmq")
+
+[node name="StateChartDebugger" parent="." instance=ExtResource("2_njgj3")]
+visible = false
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = -145.0
+offset_top = -316.0
+offset_right = 126.0
+offset_bottom = -47.0
+grow_horizontal = 1
+grow_vertical = 1
+enabled = false
+initial_node_to_watch = NodePath("../StateChart")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_ls065")
+autoplay = "default"
+
+[node name="KillZone" parent="." instance=ExtResource("4_b8xth")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KillZone"]
+position = Vector2(0, 6.5)
+shape = SubResource("RectangleShape2D_uljmq")
+
+[node name="DetectZone" parent="." instance=ExtResource("5_heptj")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectZone"]
+position = Vector2(0, 6)
+shape = SubResource("CircleShape2D_njgj3")
+
+[node name="RayCastRight" type="RayCast2D" parent="."]
+position = Vector2(0, 6)
+target_position = Vector2(7, 0)
+
+[node name="RayCastLeft" type="RayCast2D" parent="."]
+position = Vector2(0, 6)
+target_position = Vector2(-7, 0)
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("6_pkt3i")
+metadata/_custom_type_script = "uid://couw105c3bde4"
+
+[node name="Root" type="Node" parent="StateChart"]
+script = ExtResource("7_njgj3")
+
+[node name="AlertState" type="Node" parent="StateChart/Root"]
+script = ExtResource("7_2eo36")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateChart/Root/AlertState"]
+script = ExtResource("8_a75c6")
+
+[node name="To Observing" type="Node" parent="StateChart/Root/AlertState/Idle"]
+script = ExtResource("9_ryi4w")
+to = NodePath("../../Observing")
+event = &"enemy_entered"
+delay_in_seconds = "0.0"
+
+[node name="Observing" type="Node" parent="StateChart/Root/AlertState"]
+script = ExtResource("8_a75c6")
+
+[node name="ToIdle" type="Node" parent="StateChart/Root/AlertState/Observing"]
+script = ExtResource("9_ryi4w")
+to = NodePath("../../Idle")
+event = &"enemy_out"
+delay_in_seconds = "0.0"
+
+[node name="BerserkMode" type="Node" parent="StateChart/Root"]
+script = ExtResource("7_2eo36")
+initial_state = NodePath("Normal")
+
+[node name="Normal" type="Node" parent="StateChart/Root/BerserkMode"]
+script = ExtResource("8_a75c6")
+
+[node name="ToBerserk" type="Node" parent="StateChart/Root/BerserkMode/Normal"]
+script = ExtResource("9_ryi4w")
+to = NodePath("../../Berserk")
+event = &"enemy_entered"
+delay_in_seconds = "0.0"
+
+[node name="Berserk" type="Node" parent="StateChart/Root/BerserkMode"]
+script = ExtResource("8_a75c6")
+
+[node name="ToNormal" type="Node" parent="StateChart/Root/BerserkMode/Berserk"]
+script = ExtResource("9_ryi4w")
+to = NodePath("../../Normal")
+event = &"enemy_out"
+delay_in_seconds = "2"
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(0, 9)
+shape = SubResource("CapsuleShape2D_uljmq")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.2
+
+[connection signal="body_entered" from="DetectZone" to="." method="_on_detect_zone_body_entered"]
+[connection signal="body_exited" from="DetectZone" to="." method="_on_detect_zone_body_exited"]
+[connection signal="state_entered" from="StateChart/Root/AlertState/Observing" to="." method="_on_observing_state_entered"]
+[connection signal="state_exited" from="StateChart/Root/AlertState/Observing" to="." method="_on_observing_state_exited"]
+[connection signal="state_entered" from="StateChart/Root/BerserkMode/Berserk" to="." method="_on_berserk_state_entered"]
+[connection signal="state_exited" from="StateChart/Root/BerserkMode/Berserk" to="." method="_on_berserk_state_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

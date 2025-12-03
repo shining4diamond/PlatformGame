@@ -18,10 +18,27 @@ config/icon="res://icon.svg"
 [autoload]
 
 Music="*res://Scenes/music.tscn"
+Globals="*res://Scripts/Globals.gd"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot_state_charts/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot_state_charts/plugin.cfg", "res://addons/safe_resource_loader/plugin.cfg")
+
+[global_group]
+
+Player="Player's group"
+game_events=""
+
+[gui]
+
+theme/custom="uid://d0utgw1xcxoh5"
 
 [input]
 

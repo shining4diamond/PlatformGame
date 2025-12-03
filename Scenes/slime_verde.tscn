@@ -1,0 +1,124 @@
+[gd_scene load_steps=17 format=3 uid="uid://ddvo7o33dvmnu"]
+
+[ext_resource type="Script" uid="uid://bbenxnsuogsb0" path="res://Scripts/slimeVerde.gd" id="1_aiwxb"]
+[ext_resource type="Texture2D" uid="uid://udw6bqpgaxa6" path="res://Assets/sprites/slime_green.png" id="1_jokqx"]
+[ext_resource type="PackedScene" uid="uid://do7owocadqd8a" path="res://Scenes/kill_zone.tscn" id="2_swwnm"]
+[ext_resource type="Script" uid="uid://couw105c3bde4" path="res://addons/godot_state_charts/state_chart.gd" id="4_vblni"]
+[ext_resource type="Script" uid="uid://jk2jm1g6q853" path="res://addons/godot_state_charts/compound_state.gd" id="5_e388w"]
+[ext_resource type="PackedScene" uid="uid://6sr8oii5btbu" path="res://Scenes/detect_zone.tscn" id="5_r4o34"]
+[ext_resource type="Script" uid="uid://cytafq8i1y8qm" path="res://addons/godot_state_charts/atomic_state.gd" id="6_r4o34"]
+[ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="7_y26kt"]
+[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="8_e388w"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_swwnm"]
+atlas = ExtResource("1_jokqx")
+region = Rect2(0, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aiwxb"]
+atlas = ExtResource("1_jokqx")
+region = Rect2(24, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_paq7w"]
+atlas = ExtResource("1_jokqx")
+region = Rect2(48, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f4si1"]
+atlas = ExtResource("1_jokqx")
+region = Rect2(72, 24, 24, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5gljc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_swwnm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aiwxb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_paq7w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f4si1")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aiwxb"]
+size = Vector2(7, 9.5)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_r4o34"]
+radius = 46.09772
+
+[node name="SlimeVerde" type="Node2D" groups=["game_events"]]
+script = ExtResource("1_aiwxb")
+
+[node name="StateChartDebugger" parent="." instance=ExtResource("8_e388w")]
+visible = false
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = -23.0
+offset_top = -193.0
+offset_right = 184.0
+offset_bottom = -56.0
+grow_horizontal = 1
+grow_vertical = 1
+enabled = false
+initial_node_to_watch = NodePath("../StateChart")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_5gljc")
+autoplay = "default"
+frame_progress = 0.60628355
+
+[node name="KillZone" parent="." instance=ExtResource("2_swwnm")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KillZone"]
+position = Vector2(0, 6)
+shape = SubResource("RectangleShape2D_aiwxb")
+
+[node name="DetectZone" parent="." instance=ExtResource("5_r4o34")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectZone"]
+position = Vector2(0, 6)
+shape = SubResource("CircleShape2D_r4o34")
+
+[node name="RayCastRight" type="RayCast2D" parent="."]
+position = Vector2(0, 5)
+target_position = Vector2(9, 0)
+
+[node name="RayCastLeft" type="RayCast2D" parent="."]
+position = Vector2(0, 5)
+target_position = Vector2(-8, 0)
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("4_vblni")
+metadata/_custom_type_script = "uid://couw105c3bde4"
+
+[node name="Root" type="Node" parent="StateChart"]
+script = ExtResource("5_e388w")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateChart/Root"]
+script = ExtResource("6_r4o34")
+
+[node name="To Observing" type="Node" parent="StateChart/Root/Idle"]
+script = ExtResource("7_y26kt")
+to = NodePath("../../Observing")
+event = &"enemy_entered"
+delay_in_seconds = "0.0"
+
+[node name="Observing" type="Node" parent="StateChart/Root"]
+script = ExtResource("6_r4o34")
+
+[node name="Transition" type="Node" parent="StateChart/Root/Observing"]
+script = ExtResource("7_y26kt")
+to = NodePath("../../Idle")
+event = &"enemy_out"
+delay_in_seconds = "0.0"
+
+[connection signal="body_entered" from="DetectZone" to="." method="_on_detect_zone_body_entered"]
+[connection signal="body_exited" from="DetectZone" to="." method="_on_detect_zone_body_exited"]

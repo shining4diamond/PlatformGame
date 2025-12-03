@@ -1,0 +1,35 @@
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://d0utgw1xcxoh5"]
+
+[ext_resource type="FontFile" uid="uid://jmiysvdab760" path="res://Assets/fonts/PixelOperator8.ttf" id="1_px06m"]
+[ext_resource type="Texture2D" uid="uid://cyuo3ch0xea8u" path="res://Assets/sprites/UIBundleFree/UiCozyFree.png" id="2_0je3g"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0je3g"]
+atlas = ExtResource("2_0je3g")
+region = Rect2(101, 166, 59, 83)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6ua3j"]
+texture = SubResource("AtlasTexture_0je3g")
+texture_margin_left = 48.0
+texture_margin_top = 48.0
+texture_margin_right = 48.0
+texture_margin_bottom = 48.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ua3j"]
+atlas = ExtResource("2_0je3g")
+region = Rect2(162, 165, 51, 84)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_77rq2"]
+texture = SubResource("AtlasTexture_6ua3j")
+texture_margin_left = 12.0
+texture_margin_top = 12.0
+texture_margin_right = 12.0
+texture_margin_bottom = 12.0
+
+[resource]
+BigPanelContainer/base_type = &"PanelContainer"
+BigPanelContainer/styles/panel = SubResource("StyleBoxTexture_6ua3j")
+Label/colors/font_color = Color(0, 0, 0, 1)
+Label/colors/font_outline_color = Color(1, 1, 1, 1)
+Label/font_sizes/font_size = 32
+Label/fonts/font = ExtResource("1_px06m")
+PanelContainer/styles/panel = SubResource("StyleBoxTexture_77rq2")
