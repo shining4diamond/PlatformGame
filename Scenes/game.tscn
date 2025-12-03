@@ -1733,6 +1733,9 @@ text = "Space to jump"
 [node name="CheckpointZone" parent="Checkpoints" instance=ExtResource("12_rku1e")]
 position = Vector2(632, -542)
 
+[node name="CheckpointZone6" parent="Checkpoints" instance=ExtResource("12_rku1e")]
+position = Vector2(88, -62)
+
 [node name="CheckpointZone3" parent="Checkpoints" instance=ExtResource("12_rku1e")]
 position = Vector2(1464, -94)
 
