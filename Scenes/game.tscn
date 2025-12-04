@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://bd3g78gdumn1y"]
+[gd_scene load_steps=44 format=3 uid="uid://bd3g78gdumn1y"]
 
 [ext_resource type="PackedScene" uid="uid://cno72ge57cd5i" path="res://Scenes/player.tscn" id="1_ebmjs"]
 [ext_resource type="Script" uid="uid://lqvm4o02aphq" path="res://Scripts/ui_manager.gd" id="2_mucmn"]
@@ -28,6 +28,7 @@
 [ext_resource type="Texture2D" uid="uid://dykkkpx200tlo" path="res://Assets/sprites/Coin/coin007.png" id="20_bwj6o"]
 [ext_resource type="Texture2D" uid="uid://cmykj8vpolaay" path="res://Assets/sprites/Coin/coin008.png" id="21_f3c8l"]
 [ext_resource type="Texture2D" uid="uid://ihghv1mp3107" path="res://Assets/sprites/Coin/coin009.png" id="22_bu0y5"]
+[ext_resource type="PackedScene" uid="uid://d2tsq3kp0xels" path="res://Scenes/LeaderBoard/leaderboard_margin_container.tscn" id="22_ese38"]
 [ext_resource type="Script" uid="uid://cmubdw12v5ufc" path="res://Scripts/settings.gd" id="24_8m3t6"]
 [ext_resource type="PackedScene" uid="uid://21y06rrokkql" path="res://Scenes/platform_yellow.tscn" id="26_8m3t6"]
 [ext_resource type="Script" uid="uid://da4i4cbswwe5n" path="res://Scripts/saver_loader.gd" id="32_ese38"]
@@ -548,7 +549,7 @@ layout_mode = 2
 
 [node name="SettingsButton" type="Button" parent="UI/UISettingsMarginContainer/GridContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 10
+size_flags_horizontal = 3
 text = "SETTINGS"
 
 [node name="SaveButton" type="Button" parent="UI/UISettingsMarginContainer/GridContainer/VBoxContainer"]
@@ -558,6 +559,10 @@ text = "SAVE"
 [node name="LoadButton" type="Button" parent="UI/UISettingsMarginContainer/GridContainer/VBoxContainer"]
 layout_mode = 2
 text = "LOAD"
+
+[node name="Leaderboard" type="Button" parent="UI/UISettingsMarginContainer/GridContainer/VBoxContainer"]
+layout_mode = 2
+text = "LEADERBOARD"
 
 [node name="UIMarginContainer" type="MarginContainer" parent="UI"]
 offset_right = 40.0
@@ -806,6 +811,9 @@ theme_override_constants/margin_bottom = 30
 layout_mode = 2
 size_flags_horizontal = 4
 text = "DONE"
+
+[node name="Leaderboard" parent="UI" instance=ExtResource("22_ese38")]
+visible = false
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_3dryh")
@@ -1730,22 +1738,16 @@ text = "Space to jump"
 
 [node name="Checkpoints" type="Node" parent="."]
 
-[node name="CheckpointZone" parent="Checkpoints" instance=ExtResource("12_rku1e")]
+[node name="Checkpoint2" parent="Checkpoints" instance=ExtResource("12_rku1e")]
 position = Vector2(632, -542)
 
-[node name="CheckpointZone6" parent="Checkpoints" instance=ExtResource("12_rku1e")]
+[node name="Checkpoint" parent="Checkpoints" instance=ExtResource("12_rku1e")]
 position = Vector2(88, -62)
 
-[node name="CheckpointZone3" parent="Checkpoints" instance=ExtResource("12_rku1e")]
+[node name="Checkpoint3" parent="Checkpoints" instance=ExtResource("12_rku1e")]
 position = Vector2(1464, -94)
 
-[node name="CheckpointZone5" parent="Checkpoints" instance=ExtResource("12_rku1e")]
-position = Vector2(1305, -286)
-
-[node name="CheckpointZone2" parent="Checkpoints" instance=ExtResource("12_rku1e")]
-position = Vector2(520, -77)
-
-[node name="CheckpointZone4" parent="Checkpoints" instance=ExtResource("12_rku1e")]
+[node name="Checkpoint4" parent="Checkpoints" instance=ExtResource("12_rku1e")]
 position = Vector2(1832, -702)
 
 [node name="Utilities" type="Node" parent="."]
@@ -1757,6 +1759,7 @@ script = ExtResource("32_ese38")
 [connection signal="pressed" from="UI/UISettingsMarginContainer/GridContainer/VBoxContainer/SettingsButton" to="UI/SettingsPanelContainer" method="_on_settings_button_pressed"]
 [connection signal="pressed" from="UI/UISettingsMarginContainer/GridContainer/VBoxContainer/SaveButton" to="Utilities/SaverLoader" method="_on_save_button_pressed"]
 [connection signal="pressed" from="UI/UISettingsMarginContainer/GridContainer/VBoxContainer/LoadButton" to="Utilities/SaverLoader" method="_on_load_button_pressed"]
+[connection signal="pressed" from="UI/UISettingsMarginContainer/GridContainer/VBoxContainer/Leaderboard" to="UI" method="_on_leaderboard_pressed"]
 [connection signal="pressed" from="UI/SettingsPanelContainer/SettingsGridContainer/VBoxContainer/HBoxContainer/CloseButton" to="UI/SettingsPanelContainer" method="_on_close_button_pressed"]
 [connection signal="toggled" from="UI/SettingsPanelContainer/SettingsGridContainer/VBoxContainer/MainMarginContainer/MainHBoxContainer/MainCheckBoxMute" to="UI/SettingsPanelContainer" method="_on_main_check_box_mute_toggled"]
 [connection signal="value_changed" from="UI/SettingsPanelContainer/SettingsGridContainer/VBoxContainer/MainMarginContainer/MainHBoxContainer/MainVolumeSlider" to="UI/SettingsPanelContainer" method="_on_main_volume_slider_value_changed"]

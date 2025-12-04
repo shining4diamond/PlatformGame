@@ -61,7 +61,6 @@ height = 6.0
 script = ExtResource("1_uljmq")
 
 [node name="StateChartDebugger" parent="." instance=ExtResource("2_njgj3")]
-visible = false
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0

@@ -1,0 +1,58 @@
+[gd_scene load_steps=4 format=3 uid="uid://d3oas6njdfsh7"]
+
+[ext_resource type="Script" path="res://scripts/level.gd" id="1_loy2n"]
+[ext_resource type="PackedScene" uid="uid://bk6uhgvpw5pak" path="res://scenes/get_player_name.tscn" id="2_0x17r"]
+[ext_resource type="PackedScene" uid="uid://dg7v2b2wmom2k" path="res://scenes/speedrun.tscn" id="3_6jnpa"]
+
+[node name="Level" type="Node2D"]
+script = ExtResource("1_loy2n")
+
+[node name="BG" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1152.0
+offset_bottom = 654.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.282353, 0.494118, 0.705882, 1)
+
+[node name="Submit" type="Button" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 429.5
+offset_top = 521.0
+offset_right = 725.5
+offset_bottom = 630.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/outline_size = 16
+theme_override_font_sizes/font_size = 54
+text = "Submit"
+
+[node name="Back" type="Button" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 953.0
+offset_top = 558.0
+offset_right = 1147.0
+offset_bottom = 640.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/outline_size = 16
+theme_override_font_sizes/font_size = 54
+text = "Back"
+
+[node name="GetPlayerName" parent="." instance=ExtResource("2_0x17r")]
+visible = false
+
+[node name="Speedrun" parent="." instance=ExtResource("3_6jnpa")]
+
+[connection signal="pressed" from="Submit" to="." method="_on_submit_pressed"]
+[connection signal="pressed" from="Back" to="." method="_on_back_pressed"]

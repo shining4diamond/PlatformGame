@@ -12,7 +12,6 @@ func _ready() -> void:
 
 func save_game():
 	
-	print(player.get_path())
 	var saved_game:SavedGame = SavedGame.new()
 	
 	var saved_data:Array[SavedData] = []
@@ -22,8 +21,6 @@ func save_game():
 	saved_game.player_position = player.global_position
 	saved_game.score = Globals.score
 	saved_game.deaths = Globals.deathCount
-
-
 
 
 	ResourceSaver.save(saved_game, "user://savegame.tres")

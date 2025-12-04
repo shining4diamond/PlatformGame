@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 Music="*res://Scenes/music.tscn"
 Globals="*res://Scripts/Globals.gd"
+SilentWolf="*res://addons/silent_wolf/SilentWolf.gd"
 
 [display]
 
@@ -29,7 +30,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot_state_charts/plugin.cfg", "res://addons/safe_resource_loader/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot_state_charts/plugin.cfg", "res://addons/safe_resource_loader/plugin.cfg", "res://addons/silent_wolf/plugin.cfg")
 
 [global_group]
 
